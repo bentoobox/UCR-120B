@@ -6,7 +6,7 @@ enum Btn_States { btn_init, wPress, wlift } Btn_State;
 int joyXValue;
 int joyYValue;
 bool joyButtonState;
-int offset;
+int offset=2;
 
 const int LEDPins[] = { 6, 7, 8, 9, 10 };
 
@@ -16,7 +16,7 @@ void TickFct_BtnControl() {
     switch (Btn_State) {
     case btn_init:
         Btn_State = wPress;
-        joyButtonState = true;
+        joyButtonState = false;
         break;
 
     case wPress:
@@ -76,7 +76,7 @@ void TickFct_JoystickControl() {
 }
 
 void setup() {
-    Serial.begin(9600);
+    //Serial.begin(9600);
     TimerSet(100);
     TimerOn();
 }
@@ -87,20 +87,21 @@ void loop() {
     //Serial.print("JOYSTATE: ");
     //Serial.println(analogRead(A1));
 
-    if (timer == 5) {
+    if (timer == 1) {
         //Serial.print("OFFSET: ");
         //Serial.println(offset);
         //Serial.print("button: ");
         //Serial.println(joyButtonState);
-        TickFct_JoystickControl();
+        TickFct_BtnControl();
     }
-    if(timer>10){
-      TickFct_BtnControl();
+    if(timer>5){
+      TickFct_JoystickControl();
       timer=0;
     }
     //Serial.println(TimerFlag);
 
     if (TimerFlag) {
         timer++;
+        TimerFlag=0;
     }
 }
